@@ -189,17 +189,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return bitmap.getRowBytes() * bitmap.getHeight();
             }
         };
-        ImageLoader imageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
-            @Override
-            public Bitmap getBitmap(String url) {
-                return lruCache.get(url);
-            }
 
-            @Override
-            public void putBitmap(String url, Bitmap bitmap) {
-                lruCache.put(url, bitmap);
-            }
-        });
+//        ImageLoader imageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
+//            @Override
+//            public Bitmap getBitmap(String url) {
+//                return lruCache.get(url);
+//            }
+//
+//            @Override
+//            public void putBitmap(String url, Bitmap bitmap) {
+//                lruCache.put(url, bitmap);
+//            }
+//        });
+        ImageLoader imageLoader = new ImageLoader(mRequestQueue, new LruBitmapCache(LruBitmapCache.getCacheSize(getApplicationContext())));
         imageLoader.get(url, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
